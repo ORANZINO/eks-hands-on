@@ -1,0 +1,7 @@
+*.tfstate*
+.terraform/
+plan.*
+tmp/
+work/
+.terraform.lock.hcl
+.DS_Store

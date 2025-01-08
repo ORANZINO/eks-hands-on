@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: deployment
+  namespace: default
+spec: 
+  template:
+    spec:
+      containers:
+      - name: sample-app
+        image: 248239598373.dkr.ecr.ap-northeast-2.amazonaws.com/thingsflos-hands-on
+      imagePullSecrets:
+      - name: ecr-regcred
