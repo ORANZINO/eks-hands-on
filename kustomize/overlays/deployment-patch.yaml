@@ -8,6 +8,6 @@ spec:
     spec:
       containers:
       - name: sample-app
-        image: 408627781643.dkr.ecr.ap-northeast-2.amazonaws.com/caramel/dev:latest
+        image: 408627781643.dkr.ecr.ap-northeast-2.amazonaws.com/eks-hands-on:latest
       imagePullSecrets:
       - name: ecr-regcred
