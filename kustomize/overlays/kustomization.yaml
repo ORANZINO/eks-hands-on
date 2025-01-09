@@ -4,7 +4,7 @@ namePrefix: dev-
 images:
 - name: 408627781643.dkr.ecr.ap-northeast-2.amazonaws.com/eks-hands-on
   newName: 408627781643.dkr.ecr.ap-northeast-2.amazonaws.com/eks-hands-on
-  newTag: 9e453f5d
+  newTag: 8d1ac4f9
 resources:
 - ../base
 patchesStrategicMerge:
