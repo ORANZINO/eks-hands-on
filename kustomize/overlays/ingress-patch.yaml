@@ -4,7 +4,7 @@ metadata:
   name: ingress
   namespace: default
   annotations:
-    alb.ingress.kubernetes.io/subnets: subnet-, subnet-
+    alb.ingress.kubernetes.io/subnets: subnet-06c47e39517f77379, subnet-04e7b311171b91ec3
 spec:
   rules:
   - http:
