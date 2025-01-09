@@ -34,7 +34,7 @@ jobs:
       id: image-info
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: thingsflos-hands-on
+        ECR_REPOSITORY: eks-hands-on
         IMAGE_TAG: ${{ steps.image.outputs.version }}
       run: |
         echo "registry=$ECR_REGISTRY" >> $GITHUB_ENV
@@ -50,22 +50,22 @@ jobs:
     - name: Checkout kustomize repository
       uses: actions/checkout@v2
       with:
-        repository: thingsflow/thingsflow-eks-cicd-hands-on
+        repository: ORANZINO/eks-hands-on
         ref: master
         token: ${{ secrets.ACTION_TOKEN_K8S }}
-        path: thingsflow-eks-cicd-hands-on/
+        path: eks-hands-on/
 
     - name: Update Kubernetes resources
       run: |
         echo ${{ env.registry }}
         echo ${{ env.repository }}
         echo ${{ env.image_tag }}
-        cd thingsflow-eks-cicd-hands-on/kustomize/overlays/
+        cd eks-hands-on/kustomize/overlays/
         kustomize edit set image ${{ env.registry }}/${{ env.repository }}=${{ env.registry }}/${{ env.repository }}:${{ env.image_tag }}
         cat kustomization.yaml
     - name: Commit files
       run: |
-        cd thingsflow-eks-cicd-hands-on
+        cd eks-hands-on
         git config --global user.email "github-actions@github.com"
         git config --global user.name "github-actions"
         git commit -am "Update image tag"
