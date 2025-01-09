@@ -1,0 +1,72 @@
+name: Thingsflow CICD Hands On Docker Image CI
+
+on:
+  push:
+    paths:
+      - 'sample-app/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Build the Docker image
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-northeast-2
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Get image tag(verion)
+      id: image
+      run: |
+        VERSION=$(echo ${{ github.sha }} | cut -c1-8)
+        echo VERSION=$VERSION
+        echo "::set-output name=version::$VERSION"
+    - name: Build, tag, and push image to Amazon ECR
+      id: image-info
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: thingsflos-hands-on
+        IMAGE_TAG: ${{ steps.image.outputs.version }}
+      run: |
+        echo "registry=$ECR_REGISTRY" >> $GITHUB_ENV
+        echo "repository=$ECR_REPOSITORY" >> $GITHUB_ENV
+        echo "image_tag=$IMAGE_TAG" >> $GITHUB_ENV
+        echo "::set-output name=ecr_repository::$ECR_REPOSITORY"
+        echo "::set-output name=image_tag::$IMAGE_TAG"
+        docker build --cache-from=$ECR_REGISTRY/$ECR_REPOSITORY:latest --build-arg BUILDKIT_INLINE_CACHE=1 -t $ECR_REGISTRY/$ECR_REPOSITORY:latest -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG sample-app/
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY --all-tags
+    - name: Setup Kustomize
+      uses: imranismail/setup-kustomize@v1
+
+    - name: Checkout kustomize repository
+      uses: actions/checkout@v2
+      with:
+        repository: thingsflow/thingsflow-eks-cicd-hands-on
+        ref: master
+        token: ${{ secrets.ACTION_TOKEN_K8S }}
+        path: thingsflow-eks-cicd-hands-on/
+
+    - name: Update Kubernetes resources
+      run: |
+        echo ${{ env.registry }}
+        echo ${{ env.repository }}
+        echo ${{ env.image_tag }}
+        cd thingsflow-eks-cicd-hands-on/kustomize/overlays/
+        kustomize edit set image ${{ env.registry }}/${{ env.repository }}=${{ env.registry }}/${{ env.repository }}:${{ env.image_tag }}
+        cat kustomization.yaml
+    - name: Commit files
+      run: |
+        cd thingsflow-eks-cicd-hands-on
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "github-actions"
+        git commit -am "Update image tag"
+        git push -u origin master

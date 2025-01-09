@@ -4,12 +4,12 @@ owner                           = "dachan.choi"
 region                          = "ap-northeast-2"
 
 ############### VPC
-vpc_id                          = "vpc-"
-eks_subnet_ids                  = [ "subnet-", "subnet-"]
+vpc_id                          = "vpc-0c7b180ce196f3c9f"
+eks_subnet_ids                  = [ "subnet-06c47e39517f77379", "subnet-04e7b311171b91ec3"]
 azs                             = [ "ap-northeast-2a", "ap-northeast-2c" ]
 
 ############### EKS Cluster
-cluster_version                 = "1.22"
+cluster_version                 = "1.31"
 enable_irsa                     = true
 cluster_endpoint_private_access = true
 cluster_endpoint_public_access  = true

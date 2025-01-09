@@ -21,14 +21,14 @@ server:
       kubernetes.io/ingress.class: alb
       alb.ingress.kubernetes.io/scheme: internet-facing
       alb.ingress.kubernetes.io/tags: Environment=dev,Name=argocd-alb
-      alb.ingress.kubernetes.io/subnets: subnet-, subnet-
+      alb.ingress.kubernetes.io/subnets: subnet-06c47e39517f77379, subnet-04e7b311171b91ec3
   extraArgs:
     - --insecure
   config:
 #    url: http://127.0.0.1:30080
     accounts.admin: apiKey, login
     repositories: |
-     - url: https://github.com/thingsflow/thingsflow-eks-cicd-hands-on.git
+     - url: https://github.com/ORANZINO/eks-hands-on
 #    dex.config: |
 #      connectors:
 #        - type: github
