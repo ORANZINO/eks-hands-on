@@ -2,8 +2,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namePrefix: dev-
 images:
-- name: 2408627781643.dkr.ecr.ap-northeast-2.amazonaws.com/eks-hands-on
-  newName: 2408627781643.dkr.ecr.ap-northeast-2.amazonaws.com/eks-hands-on
+- name: 408627781643.dkr.ecr.ap-northeast-2.amazonaws.com/eks-hands-on
+  newName: 408627781643.dkr.ecr.ap-northeast-2.amazonaws.com/eks-hands-on
   newTag: d4b67cdc
 resources:
 - ../base
