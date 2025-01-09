@@ -2,8 +2,6 @@ name: Thingsflow CICD Hands On Docker Image CI
 
 on:
   push:
-    paths:
-      - 'sample-app/**'
 
 jobs:
   build:
